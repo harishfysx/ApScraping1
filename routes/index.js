@@ -12,20 +12,28 @@ router.get('/', function(req, res, next) {
   if (!error) {
     var $ = cheerio.load(body),
     	videos=[];
-    	
-    	  $('a[class=titleread]').each(function() {
-    var link = $(this);
-    var text = link.text();
+      /*
+      $('img').each(function (img) {
+        img_url = img.attribs.src
+        console.log(img_url)
+        videos.push(img_url);
+
+      }
+    */
+      
+      //videos=imgs;
+    	imgs = $('img').toArray()
+      imgs.forEach(function (img) {
+        var img_url = img.attribs.src
+        console.log(img);
+        videos.push(img_url);
+      })
+   
     
-    videos.push(text);
-    console.log(text + " -> " + link);
-  });
-    
-//=> Apple
-      //res.json(videos)
-       res.render('index', { title: 'Express' ,videos:videos});
-      //res.render('index', { title: temperature });
-    //console.log("It’s " + temperature + " degrees Fahrenheit.");
+
+    res.render('index', { title: 'Express' ,videos:videos});  
+       
+
   } else {
     console.log("We’ve encountered an error: " + error);
   }
