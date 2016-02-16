@@ -1,3 +1,3 @@
 readme.md
 
-1. It pulls up the latest videos from www.ap7am.com
+1. It pulls up the latest video image files of latest videos from ap7am.com
