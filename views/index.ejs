@@ -8,11 +8,20 @@
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
 
-    <h2>Loop</h2>
+    <h2>Videos</h2>
 <ul>
     <% videos.forEach(function(video) { %>
-        <li><%= video %></li>
+        <li>
+          
+          <a href="https://www.youtube.com/watch?v=<%= video %>"><%= video %> </a>
+        </li>
     <% }); %>
 </ul>
+
+    
+
+   
+
+
   </body>
 </html>

@@ -1,5 +1,6 @@
 var express = require('express');
 var a = require("array-tools");
+var S = require('string');
 var bodyParser = require('body-parser');
 var request = require("request"),
   cheerio = require("cheerio"),
@@ -29,13 +30,22 @@ router.get('/', function(req, res, next) {
 
       imgs.forEach(function (img) {
         var img_url = img.attribs.src
-        console.log(img);
-        videos.push(img_url);
+        
+        var exper= S(img_url).between('http://i1.ytimg.com/vi/', '/mqdefault.jpg').s
+        
+        if(exper && exper.length>0){
+          console.log(exper)
+          videos.push(exper);
+        }
+        
       })
    
-     filtVideos= a.where(videos, /i1.ytimg.com/);
+    // filtVideos= a.where(videos, /i1.ytimg.com/);
 
-    res.render('index', { title: 'Express' ,videos:filtVideos});  
+
+
+
+    res.render('index', { title: 'Express' ,videos:videos});  
        
 
   } else {
