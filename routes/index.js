@@ -1,6 +1,7 @@
 var express = require('express');
 var a = require("array-tools");
 var S = require('string');
+var xhr = require('node-xhr');
 var bodyParser = require('body-parser');
 var request = require("request"),
   cheerio = require("cheerio"),
@@ -34,6 +35,28 @@ router.get('/', function(req, res, next) {
         var exper= S(img_url).between('http://i1.ytimg.com/vi/', '/mqdefault.jpg').s
         
         if(exper && exper.length>0){
+
+          xhr.get({
+        url: 'https://www.googleapis.com/youtube/v3/videos?',
+        headers: {
+            'Content-Type': 'application/json'
+            
+        },
+        params: {
+            part: 'snippet',
+            id: exper,
+            key: 'AIzaSyDiShhFUcCs8zdaoyxAWblffHbBMOnmAQE'
+      
+        },
+    }, function(err, resp) {
+        if (err) {
+            console.log(err.message);
+            return;
+        }
+      console.log(resp)
+    
+    });
+
           console.log(exper)
           videos.push(exper);
         }
