@@ -53,7 +53,7 @@ router.get('/', function(req, res, next) {
             console.log(err.message);
             return;
         }
-      console.log(resp)
+      console.log(a.pick(resp.body.items, ["id","snippet.title","snippet.thumbnails.default.url","snippet.tags"]))
     
     });
 
