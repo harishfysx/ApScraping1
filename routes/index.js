@@ -14,8 +14,10 @@ var router = express.Router();
 
 
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 59, 10);
+rule.minute = new schedule.Range(0, 59, 1);
  
+ dbUpdate.updateDB();
+
 schedule.scheduleJob(rule, function(){
   console.log('Updating DB for every 10 minute');
   dbUpdate.updateDB();

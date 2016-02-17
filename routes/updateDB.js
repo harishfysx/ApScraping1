@@ -27,20 +27,65 @@ var request = require("request"),
                             console.log(err)
                         }
                         if (!news) {
-                            console.log('starting saving ' + exper);
-                            var chron = new News({
-                                youid: exper,
-                                title: 'test title',
-                                thumbnail: 'default url',
-                                tags: ['james', 'bond', 'tst']
-                            });
-                            chron.save(function(err) {
-                                if (err) {
-                                    console.log(err)
-                                } else {
-                                    console.log(exper + ' saved successfully!');
-                                }
-                            });
+
+
+
+                                //xhr get start
+                                    xhr.get({
+                                            url: 'https://www.googleapis.com/youtube/v3/videos?',
+                                            headers: {
+                                                        'Content-Type': 'application/json'
+            
+                                                    },
+                                            params: {
+                                                    part: 'snippet',
+                                                    id: exper,
+                                                    key: 'AIzaSyDiShhFUcCs8zdaoyxAWblffHbBMOnmAQE'
+            
+                                                    },
+                                            }, function(err, resp) {
+                                                    if (err) {
+                                                         console.log(err.message);
+                                                        return;
+                                                    }
+                                                    var fltDat=[]
+
+                                                //if total results start
+                                                if(resp.body.pageInfo.totalResults==1){
+                                               fltDat=a.pick(resp.body.items, ["id","snippet.title","snippet.thumbnails.default.url","snippet.tags"])     
+                                               var ayouid=a.pluck(fltDat, "id");
+                                               var atitle=a.pluck(fltDat, "title");
+                                               var athumbnail=a.pluck(fltDat, "thumbnail");
+                                               var atags=a.pluck(fltDat, "tags");
+                                               //console.log(gid[0])
+                                           
+                                                console.log('starting saving ' + exper);
+
+                                            var chron = new News({
+                                            youid: ayouid[0],
+                                            title: atitle[0],
+                                            thumbnail: athumbnail[0],
+                                            tags: atags
+                                            });
+
+
+                                            chron.save(function(err) {
+                                                    if (err) {
+                                                         console.log(err)
+                                                    } else {
+                                                        console.log(exper + ' saved successfully!');
+                                                        }
+                                             });
+
+                                            }//if total results end
+        
+                                     });
+
+                                //xhr get end
+                            
+
+                            
+
                         }
                         if (news) {
                             console.log('not saved ' + news.youid + ' record already exists ');
