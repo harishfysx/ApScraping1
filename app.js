@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -7,6 +8,12 @@ var bodyParser = require('body-parser');
 var home = require('./routes/index');
 var app = express();
 
+var dbConfig = require('./routes/db');
+
+
+
+//Connect to DB
+mongoose.connect(dbConfig.url);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
