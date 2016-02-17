@@ -4,57 +4,36 @@ var S = require('string');
 var xhr = require('node-xhr');
 var mongoose = require('mongoose');
 var News = require('./dbSchema');
+var schedule = require('node-schedule');
+var dbUpdate = require('./updateDB');
 var bodyParser = require('body-parser');
 var request = require("request"),
     cheerio = require("cheerio"),
     url = "http://www.ap7am.com/telugu-videos-1-all-videos.html";
 var router = express.Router();
-router.get('/', function(req, res, next) {
-    request(url, function(error, response, body) {
-        if (!error) {
-            var $ = cheerio.load(body),
-                videos = [];
-            imgs = $('img').toArray();
-            imgs.forEach(function(img) {
-                var img_url = img.attribs.src
-                var exper = S(img_url).between('http://i1.ytimg.com/vi/', '/mqdefault.jpg').s
-                if (exper && exper.length > 0) {
-                    News.findOne({
-                        youid: exper
-                    }, function(err, news) {
-                        if (err) {
-                            console.log(err)
-                        }
-                        if (!news) {
-                            console.log('starting saving ' + exper);
-                            var chron = new News({
-                                youid: exper,
-                                title: 'test title',
-                                thumbnail: 'default url',
-                                tags: ['james', 'bond', 'tst']
-                            });
-                            chron.save(function(err) {
-                                if (err) {
-                                    console.log(err)
-                                } else {
-                                    console.log(exper + ' saved successfully!');
-                                }
-                            });
-                        }
-                        if (news) {
-                            console.log('not saved ' + news.youid + ' record already exists ');
-                        }
-                    });
-                    videos.push(exper);
-                }
-            })
-            res.render('index', {
-                title: 'Express',
-                videos: videos
-            });
-        } else {
-            console.log("We’ve encountered an error: " + error);
-        }
-    });
+
+
+var rule = new schedule.RecurrenceRule();
+rule.minute = new schedule.Range(0, 59, 10);
+ 
+schedule.scheduleJob(rule, function(){
+  console.log('Updating DB for every 10 minute');
+  dbUpdate.updateDB();
 });
+
+
+
+
+
+//Render Home Page Start
+router.get('/', function(req, res, next) {
+
+      News.find({}, function(err, news) {
+           res.render('index', {title: 'Express',videos: news});
+        });
+});
+
+//Render Home Page End
+
+
 module.exports = router;
