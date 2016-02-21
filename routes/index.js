@@ -14,7 +14,7 @@ var router = express.Router();
 
 
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 59, 1);
+rule.minute = new schedule.Range(0, 59, 30);
  
  dbUpdate.updateDB();
 

@@ -6,6 +6,7 @@ var newsSchema = new Schema({
   youid: {type:String,required: true,unique: true},
   title: String,
   thumbnail:String,
+  createdDate:Date,
   tags:Array
 });
 

@@ -57,6 +57,7 @@ var request = require("request"),
                                                var atitle=a.pluck(fltDat, "title");
                                                var athumbnail=a.pluck(fltDat, "thumbnail");
                                                var atags=a.pluck(fltDat, "tags");
+
                                                //console.log(gid[0])
                                            
                                                 console.log('starting saving ' + exper);
@@ -65,6 +66,7 @@ var request = require("request"),
                                             youid: ayouid[0],
                                             title: atitle[0],
                                             thumbnail: athumbnail[0],
+                                            createdDate: new Date(),
                                             tags: atags
                                             });
 
